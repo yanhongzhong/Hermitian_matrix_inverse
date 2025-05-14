@@ -58,10 +58,14 @@ void saveMatrix(const std::string& filename, const std::vector<std::vector<compl
     }
 }
 
-void printMatrix(const std::vector<std::vector<complexf>>& matrix) {
-    for (const auto& row : matrix) {
-        for (const auto& elem : row)
-            std::cout << "(" << elem.real() << "," << elem.imag() << ") ";
-        std::cout << std::endl;
+void printMatrix(const std::vector<std::vector<complexf>>& matrix,
+                 std::ostream& out) {
+    int n = matrix.size();
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            auto& c = matrix[i][j];
+            out << "(" << c.real() << "," << c.imag() << ") ";
+        }
+        out << "\n";
     }
 }

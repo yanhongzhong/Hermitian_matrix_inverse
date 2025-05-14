@@ -10,5 +10,5 @@ std::vector<std::vector<complexf>> generateHermitianMatrix(int size);
 std::vector<std::vector<complexf>> loadHermitianMatrix(const std::string& filename);
 // Save matrix to file in same format
 void saveMatrix(const std::string& filename, const std::vector<std::vector<complexf>>& matrix);
-// Print matrix to stdout
-void printMatrix(const std::vector<std::vector<complexf>>& matrix);
+// Print matrix 
+void printMatrix(const std::vector<std::vector<complexf>>& matrix, std::ostream& out);
