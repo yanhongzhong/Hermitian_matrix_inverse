@@ -15,6 +15,7 @@ void print_usage(const char* prog_name) {
               << "  -i <file>       Input Hermitian matrix file (default: generate random)\n"
               << "  -o <file>       Output file for inverted matrix (default: stdout)\n"
               << "  -n <iterations> Number of inversion runs (default: 1)\n"
+              << "  -s <size>       Size N of generated N x N matrix (default: 16)\n"
               << "  -h              Display this help message\n";
 }
 
