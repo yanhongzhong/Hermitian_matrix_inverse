@@ -24,15 +24,17 @@ int main(int argc, char* argv[]) {
     std::string input_file = "";
     std::string output_file = "";
     int iterations = 1;
+    int mat_size = 16; 
 
     int opt;
-    while ((opt = getopt(argc, argv, "m:i:o:n:rh")) != -1) {
+    while ((opt = getopt(argc, argv, "m:i:o:n:s:rh")) != -1) {
         switch (opt) {
             case 'r': use_recursive = true; break;
             case 'm': use_recursive = (std::string(optarg) == "recursive"); break;
             case 'i': use_generated = false; input_file = optarg; break;
             case 'o': output_file = optarg; break;
             case 'n': iterations = std::stoi(optarg); break;
+            case 's': mat_size = std::stoi(optarg); break;
             case 'h': print_usage(argv[0]); return 0;
             default:
                 std::cerr << "Unknown option '" << char(opt) << "'\n";
@@ -42,7 +44,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::vector<std::vector<std::complex<float>>> A;
-    if (use_generated) A = generateHermitianMatrix(1024);
+    if (use_generated) A = generateHermitianMatrix(mat_size);
     else A = loadHermitianMatrix(input_file);
 
     std::vector<std::vector<std::complex<float>>> A_inv;
