@@ -69,11 +69,12 @@ int main(int argc, char* argv[]) {
     Timer timer;
     float total_time = 0.0f;
 
-    timer.start();
     for (int i = 0; i < iterations; ++i) {
+        timer.start();
         A_inv = invertHermitianCuBLAS(A);
+        total_time += timer.stop();
     }
-    total_time += timer.stop();
+    
     float avg_time = total_time / iterations;
 
     float frob_err = verify_inverse(A, A_inv);
@@ -86,6 +87,8 @@ int main(int argc, char* argv[]) {
         printMatrix(A_inv, out);
         out << "\n# Average inversion time (ms): " << avg_time << "\n";
         out << "# Verification Frobenius error ||A*A_inv - I||_F: " << frob_err << "\n";
+        std::cout << "\n# Average inversion time (ms): " << avg_time << "\n";
+        std::cout << "# Verification Frobenius error ||A*A_inv - I||_F: " << frob_err << "\n";
     } else {
         std::cout << "# Input matrix A (" << mat_size << "x" << mat_size << ")\n";
         printMatrix(A, std::cout);
