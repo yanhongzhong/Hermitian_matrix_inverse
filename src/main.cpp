@@ -8,6 +8,16 @@
 #include "hermitian_cublas.h"
 #include "timer.h"
 
+void print_usage(const char* prog_name) {
+    std::cout << "Usage: " << prog_name << " [options]\n"
+              << "  -r              Use recursive inversion (default is cuBLAS)\n"
+              << "  -m <method>     Method: recursive or cublas\n"
+              << "  -i <file>       Input Hermitian matrix file (default: generate random)\n"
+              << "  -o <file>       Output file for inverted matrix (default: stdout)\n"
+              << "  -n <iterations> Number of inversion runs (default: 1)\n"
+              << "  -h              Display this help message\n";
+}
+
 int main(int argc, char* argv[]) {
     bool use_recursive = false;
     bool use_generated = true;
@@ -16,14 +26,18 @@ int main(int argc, char* argv[]) {
     int iterations = 1;
 
     int opt;
-    while ((opt = getopt(argc, argv, "rm:i:o:n:")) != -1) {
+    while ((opt = getopt(argc, argv, "m:i:o:n:rh")) != -1) {
         switch (opt) {
             case 'r': use_recursive = true; break;
-            case 'm': use_recursive = std::string(optarg) == "recursive"; break;
+            case 'm': use_recursive = (std::string(optarg) == "recursive"); break;
             case 'i': use_generated = false; input_file = optarg; break;
             case 'o': output_file = optarg; break;
             case 'n': iterations = std::stoi(optarg); break;
-            default: std::cerr << "Invalid option." << std::endl; return 1;
+            case 'h': print_usage(argv[0]); return 0;
+            default:
+                std::cerr << "Unknown option '" << char(opt) << "'\n";
+                print_usage(argv[0]);
+                return 1;
         }
     }
 
