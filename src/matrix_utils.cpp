@@ -4,16 +4,32 @@
 #include <random>
 
 std::vector<std::vector<complexf>> generateHermitianMatrix(int size) {
-    std::vector<std::vector<complexf>> A(size, std::vector<complexf>(size));
     std::mt19937 gen(42);
     std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+
+    // Step 1: Generate random complex matrix B
+    std::vector<std::vector<complexf>> B(size, std::vector<complexf>(size));
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j)
+            B[i][j] = complexf(dist(gen), dist(gen));
+
+    // Step 2: Compute A = Bᴴ * B (guaranteed Hermitian and positive semi-definite)
+    std::vector<std::vector<complexf>> A(size, std::vector<complexf>(size, complexf(0.0f, 0.0f)));
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j <= i; ++j) {
-            complexf val(dist(gen), dist(gen));
-            A[i][j] = val;
-            A[j][i] = std::conj(val);
+            complexf sum(0.0f, 0.0f);
+            for (int k = 0; k < size; ++k)
+                sum += std::conj(B[k][i]) * B[k][j];
+            A[i][j] = sum;
+            A[j][i] = std::conj(sum); // ensure Hermitian
         }
     }
+
+    // Optional: Improve conditioning (push eigenvalues up)
+    for (int i = 0; i < size; ++i) {
+        A[i][i] += complexf(1.0f, 0.0f);  // shift eigenvalues
+    }
+
     return A;
 }
 
